@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor - AI-Powered Learning Companion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2"></i>Tutor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#vision-board">Vision Board</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#learn">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#progress">Progress</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tutor-chat">AI Tutor</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section bg-gradient-primary text-white py-5">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">Learn by Building, Understand by Doing</h1>
+            <p class="lead mb-4">Transform AI-assisted coding into a guided, confidence-building learning journey</p>
+            <button class="btn btn-light btn-lg me-3" onclick="showSection('vision-board')">
+                <i class="fas fa-rocket me-2"></i>Get Started
+            </button>
+            <button class="btn btn-outline-light btn-lg" onclick="showSection('tutor-chat')">
+                <i class="fas fa-robot me-2"></i>Meet Your Tutor
+            </button>
+        </div>
+    </section>
+
+    <!-- Vision Board Section -->
+    <section id="vision-board" class="py-5" style="display: none;">
+        <div class="container">
+            <h2 class="text-center mb-5"><i class="fas fa-star me-2"></i>Your Learning Vision Board</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card goal-card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5><i class="fas fa-code me-2"></i>Programming Goals</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="programming-goals" class="goals-container">
+                                <div class="goal-item" data-goal="react">
+                                    <span class="goal-text">Master React</span>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-success" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                                <div class="goal-item" data-goal="python">
+                                    <span class="goal-text">Learn Python Data Science</span>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-success" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-success btn-sm mt-3" onclick="addGoal('programming')">
+                                <i class="fas fa-plus me-1"></i>Add Goal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card goal-card h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5><i class="fas fa-language me-2"></i>Languages</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="language-goals" class="goals-container">
+                                <div class="goal-item" data-goal="french">
+                                    <span class="goal-text">French B2 Level</span>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-info" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-info btn-sm mt-3" onclick="addGoal('language')">
+                                <i class="fas fa-plus me-1"></i>Add Goal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card goal-card h-100">
+                        <div class="card-header bg-warning text-dark">
+                            <h5><i class="fas fa-project-diagram me-2"></i>Projects</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="project-goals" class="goals-container">
+                                <div class="goal-item" data-goal="social-app">
+                                    <span class="goal-text">Social Outing Planner App</span>
+                                    <div class="progress mt-2">
+                                        <div class="progress-bar bg-warning" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-warning btn-sm mt-3" onclick="addGoal('project')">
+                                <i class="fas fa-plus me-1"></i>Add Goal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Counter -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card streak-card">
+                        <div class="card-body text-center">
+                            <h3><i class="fas fa-fire text-danger me-2"></i>7 Day Streak!</h3>
+                            <p>Keep it up! Daily learning builds lasting knowledge.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Section -->
+    <section id="learn" class="py-5 bg-light" style="display: none;">
+        <div class="container">
+            <h2 class="text-center mb-5"><i class="fas fa-brain me-2"></i>Today's Learning Session</h2>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card learning-card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 id="question-type">Debugging Challenge</h4>
+                            <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">5</span></div>
+                        </div>
+                        <div class="card-body">
+                            <div id="question-content">
+                                <h5>Find the bug in this React component:</h5>
+                                <pre><code class="language-javascript">function UserProfile({ user }) {
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        fetchUserData(user.id)
+            .then(data => {
+                setUser(data);
+                setLoading(false);
+            });
+    });
+    
+    if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+    
+    return (
+        &lt;div&gt;
+            &lt;h2&gt;{user.name}&lt;/h2&gt;
+            &lt;p&gt;{user.email}&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+                                <div class="mt-4">
+                                    <h6>What's wrong with this code?</h6>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="bug-answer" id="answer1" value="1">
+                                        <label class="form-check-label" for="answer1">
+                                            Missing dependency array in useEffect
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="bug-answer" id="answer2" value="2">
+                                        <label class="form-check-label" for="answer2">
+                                            setUser is not defined
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="bug-answer" id="answer3" value="3">
+                                        <label class="form-check-label" for="answer3">
+                                            Both A and B
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex justify-content-between">
+                                <button class="btn btn-outline-secondary" onclick="previousQuestion()">
+                                    <i class="fas fa-arrow-left me-1"></i>Previous
+                                </button>
+                                <button class="btn btn-primary" onclick="checkAnswer()">
+                                    <i class="fas fa-check me-1"></i>Check Answer
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="nextQuestion()">
+                                    Next<i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="mt-4">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 20%"></div>
+                        </div>
+                        <small class="text-muted">Session progress</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section id="progress" class="py-5" style="display: none;">
+        <div class="container">
+            <h2 class="text-center mb-5"><i class="fas fa-chart-line me-2"></i>Your Progress</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card stat-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-code fa-2x text-success mb-2"></i>
+                            <h4>247</h4>
+                            <p>Challenges Completed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-fire fa-2x text-danger mb-2"></i>
+                            <h4>7</h4>
+                            <p>Day Streak</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-trophy fa-2x text-warning mb-2"></i>
+                            <h4>12</h4>
+                            <p>Badges Earned</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                            <h4>45</h4>
+                            <p>Hours Learned</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Recent Achievements</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="achievement-item">
+                                <i class="fas fa-bug text-success me-2"></i>
+                                <span>Debug Master - Fixed 10 bugs in a row</span>
+                                <small class="text-muted float-end">2 hours ago</small>
+                            </div>
+                            <div class="achievement-item">
+                                <i class="fas fa-language text-info me-2"></i>
+                                <span>Polyglot - Learned 50 French words</span>
+                                <small class="text-muted float-end">1 day ago</small>
+                            </div>
+                            <div class="achievement-item">
+                                <i class="fas fa-rocket text-warning me-2"></i>
+                                <span>Quick Learner - Completed session in under 10 minutes</span>
+                                <small class="text-muted float-end">2 days ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Skill Breakdown</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="skill-item">
+                                <span>React</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 75%">75%</div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span>Python</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: 60%">60%</div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span>French</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" style="width: 45%">45%</div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <span>Data Structures</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" style="width: 30%">30%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Tutor Chat Section -->
+    <section id="tutor-chat" class="py-5 bg-light" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card chat-card">
+                        <div class="card-header bg-primary text-white">
+                            <h4><i class="fas fa-robot me-2"></i>AI Tutor Chat</h4>
+                            <small>Ask me anything about your learning journey!</small>
+                        </div>
+                        <div class="card-body">
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="message tutor-message">
+                                    <div class="message-content">
+                                        <strong>Tutor:</strong> Hi! I'm your AI learning companion. I can help you understand complex concepts, create personalized study plans, and guide you through your coding projects. What would you like to work on today?
+                                    </div>
+                                    <div class="message-time">2:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <div class="input-group">
+                                    <input type="text" id="chat-input" class="form-control" placeholder="Type your message...">
+                                    <button class="btn btn-primary" onclick="sendMessage()">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mt-4">
+                        <h5>Quick Actions:</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="quickAction('explain-concept')">
+                                Explain a Concept
+                            </button>
+                            <button class="btn btn-outline-success btn-sm" onclick="quickAction('study-plan')">
+                                Create Study Plan
+                            </button>
+                            <button class="btn btn-outline-info btn-sm" onclick="quickAction('debug-help')">
+                                Help with Debugging
+                            </button>
+                            <button class="btn btn-outline-warning btn-sm" onclick="quickAction('project-guidance')">
+                                Project Guidance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMS Integration Panel -->
+    <div id="sms-panel" class="position-fixed bottom-0 end-0 m-3" style="z-index: 1000;">
+        <div class="card sms-card">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0"><i class="fas fa-sms me-2"></i>Daily SMS Learning</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-2">Get daily vocab and challenges via SMS!</p>
+                <div class="input-group input-group-sm">
+                    <input type="tel" class="form-control" placeholder="Your phone number">
+                    <button class="btn btn-success" onclick="enableSMS()">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+                <div class="mt-2">
+                    <small class="text-muted">Using advanced-imessage-kit integration</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
