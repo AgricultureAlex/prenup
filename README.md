@@ -23,6 +23,27 @@ cd /Users/mahekparvez/Desktop/Prin/prenup
 
 ---
 
+## 📡 AI Launch Feed
+
+Real-time AI product monitoring from X/Twitter! Track the latest AI tools, frameworks, and launches.
+
+### Setup
+1. Get your X API Bearer Token from the [X Developer Portal](https://developer.twitter.com/en/portal/dashboard)
+2. Add to `.env`: `X_BEARER_TOKEN=your_token_here`
+3. Start backend: `cd ui/GitHub-Summarizer-QuestionGenerator && python3 api.py`
+4. Start frontend: `cd ui && npm start`
+
+**Features:**
+- 🔴 Live tracking of AI product launches
+- 📊 Category-based filtering (Frontend, Backend, DevOps, etc.)
+- 📈 Engagement metrics and relevance scoring
+- 🔄 Auto-refresh with 2-hour caching
+- 💾 Automatic fallback to sample data
+
+**Learn more:** See [`X_API_INTEGRATION.md`](./X_API_INTEGRATION.md)
+
+---
+
 ## Development
 
 Please cd to the directory. Then, run `pip install -r requirements.txt` to get all required dependencies at the version used for development.

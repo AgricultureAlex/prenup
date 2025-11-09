@@ -24,6 +24,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'bot'))
 try:
     from github_importer import import_repo
     from mcq_generator import generate_mcqs_for_repo
+    from multilang_mcq_generator import generate_mcqs_for_multilang_repo
     CODE_TUTOR_AVAILABLE = True
 except ImportError:
     CODE_TUTOR_AVAILABLE = False
@@ -260,43 +261,65 @@ async def generate_challenge(req: ChallengeRequest):
                 # Import/clone the repository
                 temp_dir = import_repo(github_url)
                 
-                # Generate MCQs from the repo (mode 1 = Code Detective)
-                mcqs = generate_mcqs_for_repo(temp_dir, mode=1, max_q=5)
+                # Generate MCQs from the repo using multi-language generator (mode 1 = Code Detective)
+                mcqs = generate_mcqs_for_multilang_repo(temp_dir, mode=1, max_q=5)
                 
                 if not mcqs:
-                    raise ValueError("No Python files found in repository to generate questions from")
+                    raise ValueError("No code files found in repository to generate questions from")
                 
-                # Convert MCQs to ChallengeQuestion format with AI-generated options
+                # Convert MCQs to ChallengeQuestion format
+                # Handle both complete MCQs (Python) and AI templates (other languages)
                 questions = []
                 for mcq in mcqs:
-                    # Use AI to generate multiple choice options
-                    use_gemini = req.model == "gemini"
-                    
-                    if use_gemini:
-                        options_agent = GeminiAgent(
-                            name="MCQ Options Generator",
-                            instructions=f"""You are an expert at creating challenging multiple-choice options for coding questions.
-
-Given a coding question and the correct answer, generate 3 plausible but incorrect options that would challenge students.
-
-The correct answer is: "{mcq['answer']}"
-
-The incorrect options should be:
-1. Plausible enough to seem correct at first glance
-2. Based on common misconceptions or mistakes
-3. Similar in style and length to the correct answer
-
-Format your response EXACTLY as valid JSON:
-{{
-  "incorrect_options": ["Option 1", "Option 2", "Option 3"]
-}}
-
-Return ONLY the JSON, no other text."""
-                        )
+                    # Check if this is an AI-powered question template
+                    if mcq.get('type') == 'ai_powered':
+                        # Use AI to generate the complete question
+                        use_gemini = req.model == "gemini"
+                        
+                        try:
+                            if use_gemini:
+                                ai_agent = GeminiAgent(
+                                    name="Code Question Generator",
+                                    instructions="You are an expert coding educator. Generate educational multiple-choice questions about code."
+                                )
+                                result_text = await run_gemini_agent(ai_agent, mcq['prompt_template'])
+                                response_text = result_text.strip()
+                            else:
+                                ai_agent = Agent(
+                                    name="Code Question Generator",
+                                    instructions="You are an expert coding educator. Generate educational multiple-choice questions about code."
+                                )
+                                result = await Runner.run(starting_agent=ai_agent, input=mcq['prompt_template'])
+                                response_text = result.final_output.strip()
+                            
+                            # Parse AI response
+                            json_match = re.search(r'\{[\s\S]*\}', response_text)
+                            if json_match:
+                                response_text = json_match.group(0)
+                            
+                            parsed = json.loads(response_text)
+                            
+                            # Create question with AI-generated content
+                            code_lang = mcq.get('language', 'javascript').lower()
+                            questions.append(ChallengeQuestion(
+                                question=f"{parsed['question']}\n\n```{code_lang}\n{mcq['code']}\n```",
+                                options=parsed['options'],
+                                answer=parsed['answer'],
+                                explanation=parsed.get('explanation', 'See code above for details')
+                            ))
+                        except Exception as e:
+                            print(f"Failed to generate AI question: {e}")
+                            # Skip this question on error
+                            continue
                     else:
-                        options_agent = Agent(
-                            name="MCQ Options Generator",
-                            instructions=f"""You are an expert at creating challenging multiple-choice options for coding questions.
+                        # Handle traditional Python MCQs (complete questions)
+                        # Use AI to generate multiple choice options
+                        use_gemini = req.model == "gemini"
+                        
+                        if use_gemini:
+                            options_agent = GeminiAgent(
+                                name="MCQ Options Generator",
+                                instructions=f"""You are an expert at creating challenging multiple-choice options for coding questions.
 
 Given a coding question and the correct answer, generate 3 plausible but incorrect options that would challenge students.
 
@@ -313,59 +336,84 @@ Format your response EXACTLY as valid JSON:
 }}
 
 Return ONLY the JSON, no other text."""
-                        )
-                    
-                    try:
-                        # Run the agent to generate options
-                        if use_gemini:
-                            result_text = await run_gemini_agent(
-                                options_agent,
-                                f"Question: {mcq['question']}\n\nCode:\n{mcq.get('snippet', '')}\n\nGenerate 3 incorrect options."
                             )
-                            response_text = result_text
                         else:
-                            result = await Runner.run(
-                                starting_agent=options_agent,
-                                input=f"Question: {mcq['question']}\n\nCode:\n{mcq.get('snippet', '')}\n\nGenerate 3 incorrect options.",
+                            options_agent = Agent(
+                                name="MCQ Options Generator",
+                                instructions=f"""You are an expert at creating challenging multiple-choice options for coding questions.
+
+Given a coding question and the correct answer, generate 3 plausible but incorrect options that would challenge students.
+
+The correct answer is: "{mcq['answer']}"
+
+The incorrect options should be:
+1. Plausible enough to seem correct at first glance
+2. Based on common misconceptions or mistakes
+3. Similar in style and length to the correct answer
+
+Format your response EXACTLY as valid JSON:
+{{
+  "incorrect_options": ["Option 1", "Option 2", "Option 3"]
+}}
+
+Return ONLY the JSON, no other text."""
                             )
-                            response_text = result.final_output.strip()
                         
-                        # Parse AI response
-                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                        if json_match:
-                            response_text = json_match.group(0)
-                        
-                        parsed = json.loads(response_text)
-                        incorrect_options = parsed.get("incorrect_options", [])
-                        
-                        # Combine correct answer with AI-generated incorrect options
-                        all_options = [mcq['answer']] + incorrect_options[:3]
-                        
-                        # Ensure we have exactly 4 options
-                        while len(all_options) < 4:
-                            all_options.append(f"Alternative answer {len(all_options)}")
-                        
-                        # Randomize the order
-                        random.shuffle(all_options)
-                        
-                        questions.append(ChallengeQuestion(
-                            question=f"{mcq['question']}\n\n```python\n{mcq.get('snippet', 'No code snippet')}\n```",
-                            options=all_options[:4],
-                            answer=mcq['answer'],  # Correct answer text (now randomized in position)
-                            explanation=mcq.get('explanation', 'No explanation provided')
-                        ))
-                        
-                    except Exception as e:
-                        # Fallback to original options if AI generation fails
-                        print(f"Failed to generate AI options, using fallback: {e}")
-                        shuffled_options = mcq['options'].copy()
-                        random.shuffle(shuffled_options)
-                        questions.append(ChallengeQuestion(
-                            question=f"{mcq['question']}\n\n```python\n{mcq.get('snippet', 'No code snippet')}\n```",
-                            options=shuffled_options,
-                            answer=mcq['answer'],
-                            explanation=mcq.get('explanation', 'No explanation provided')
-                        ))
+                        try:
+                            # Run the agent to generate options
+                            if use_gemini:
+                                result_text = await run_gemini_agent(
+                                    options_agent,
+                                    f"Question: {mcq['question']}\n\nCode:\n{mcq.get('snippet', '')}\n\nGenerate 3 incorrect options."
+                                )
+                                response_text = result_text
+                            else:
+                                result = await Runner.run(
+                                    starting_agent=options_agent,
+                                    input=f"Question: {mcq['question']}\n\nCode:\n{mcq.get('snippet', '')}\n\nGenerate 3 incorrect options.",
+                                )
+                                response_text = result.final_output.strip()
+                            
+                            # Parse AI response
+                            json_match = re.search(r'\{[\s\S]*\}', response_text)
+                            if json_match:
+                                response_text = json_match.group(0)
+                            
+                            parsed = json.loads(response_text)
+                            incorrect_options = parsed.get("incorrect_options", [])
+                            
+                            # Combine correct answer with AI-generated incorrect options
+                            all_options = [mcq['answer']] + incorrect_options[:3]
+                            
+                            # Ensure we have exactly 4 options
+                            while len(all_options) < 4:
+                                all_options.append(f"Alternative answer {len(all_options)}")
+                            
+                            # Randomize the order
+                            random.shuffle(all_options)
+                            
+                            questions.append(ChallengeQuestion(
+                                question=f"{mcq['question']}\n\n```python\n{mcq.get('snippet', 'No code snippet')}\n```",
+                                options=all_options[:4],
+                                answer=mcq['answer'],  # Correct answer text (now randomized in position)
+                                explanation=mcq.get('explanation', 'No explanation provided')
+                            ))
+                            
+                        except Exception as e:
+                            # Fallback to original options if AI generation fails
+                            print(f"Failed to generate AI options, using fallback: {e}")
+                            shuffled_options = mcq['options'].copy()
+                            random.shuffle(shuffled_options)
+                            questions.append(ChallengeQuestion(
+                                question=f"{mcq['question']}\n\n```python\n{mcq.get('snippet', 'No code snippet')}\n```",
+                                options=shuffled_options,
+                                answer=mcq['answer'],
+                                explanation=mcq.get('explanation', 'No explanation provided')
+                            ))
+                
+                # Ensure we have at least some questions
+                if not questions:
+                    raise ValueError("Failed to generate questions from repository")
                 
                 return ChallengeResponse(questions=questions)
                 
@@ -515,10 +563,23 @@ async def get_ai_trends():
         
         if not bearer_token:
             # Return sample data if no API key configured
+            print("⚠️ X_BEARER_TOKEN not found in environment, using sample data")
             sample_data = get_sample_ai_trends()
             _trends_cache = sample_data
             _cache_timestamp = datetime.now()
             return sample_data
+        
+        # Validate token format (real tokens are typically 100+ characters)
+        if len(bearer_token) < 50:
+            print(f"⚠️ X_BEARER_TOKEN appears invalid (too short: {len(bearer_token)} chars). Expected 100+ characters.")
+            print("   Get a valid Bearer Token from: https://developer.twitter.com/en/portal/dashboard")
+            print("   Using sample data instead.")
+            sample_data = get_sample_ai_trends()
+            _trends_cache = sample_data
+            _cache_timestamp = datetime.now()
+            return sample_data
+        
+        print(f"✓ Using X API Bearer Token (length: {len(bearer_token)} chars)")
         
         # Enhanced search query for educational tech and AI tools
         search_query = (
@@ -547,9 +608,18 @@ async def get_ai_trends():
             response = await client.get(url, headers=headers, params=params, timeout=15.0)
             
             if response.status_code != 200:
+                print(f"❌ X API Error (Status {response.status_code}):")
+                try:
+                    error_data = response.json()
+                    print(f"   {error_data}")
+                except:
+                    print(f"   {response.text}")
+                
                 # Return cached data or sample data on error
                 if _trends_cache:
+                    print("   Returning cached data instead")
                     return _trends_cache
+                print("   Returning sample data instead")
                 return get_sample_ai_trends()
             
             data = response.json()
