@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import "./homepage.css";
-import MainLayout from "./layout";
+import "./Homepage.css";
+import MainLayout from "./layout.jsx";
 
 function Homepage() {
 const streak = 5;
@@ -25,9 +25,9 @@ const handleClick = (category, name) => {
   navigate(`/roadmap/${category}/${encodeURIComponent(name)}`);
 };
 
+
   return (
     <MainLayout>
-  
     <div className="homepage-container">
       <h1 className="homepage-title">APP NAME</h1>
 
@@ -103,7 +103,7 @@ const handleClick = (category, name) => {
         </div>
       </div>
 
-      <div className="homepage-challenge"><h3 classname="challenge-title"> Daily Growth Challenge</h3></div>
+      <div className="homepage-challenge" onClick={() => navigate("/ChallengeQs")}><h3 className="challenge-title"> Daily Growth Challenges</h3></div>
 
       
       <div className="homepage-streaks">
