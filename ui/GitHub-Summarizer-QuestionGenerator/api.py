@@ -544,7 +544,7 @@ Make sure to return ONLY the JSON, no other text."""
 # Cache for AI trends data
 _trends_cache = None
 _cache_timestamp = None
-CACHE_DURATION = timedelta(hours=2)  # Cache for 2 hours to limit API usage
+CACHE_DURATION = timedelta(hours=6)  # Cache for 6 hours to conserve API quota
 
 @app.get("/ai-trends", response_model=AITrendsResponse)
 async def get_ai_trends():
@@ -599,7 +599,7 @@ async def get_ai_trends():
         
         params = {
             "query": search_query,
-            "max_results": 50,  # Increased to get more variety
+            "max_results": 25,  # Conservative for Free tier (100 tweets/month)
             "tweet.fields": "created_at,public_metrics,author_id",
             "expansions": "author_id",
             "user.fields": "name,username,profile_image_url"
@@ -629,7 +629,7 @@ async def get_ai_trends():
             products = parse_tweets_to_products(data)
             
             # Filter for quality/engagement - lowered threshold to show more results
-            products = [p for p in products if p.relevance_score >= 1][:30]
+            products = [p for p in products if p.relevance_score >= 1][:25]
             
             result = AITrendsResponse(
                 products=products,
