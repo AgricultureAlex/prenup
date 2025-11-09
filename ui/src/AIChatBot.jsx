@@ -11,9 +11,35 @@ import Navigation from './navigation/Navigation';
 const API_BASE = "http://localhost:8000";
 
 function AIChatBot() {
-const [messages, setMessages]= useState([]);
+  // Load chat history from localStorage on component mount
+  const loadChatHistory = () => {
+    try {
+      const savedMessages = localStorage.getItem('aiChatHistory');
+      return savedMessages ? JSON.parse(savedMessages) : [];
+    } catch (error) {
+      console.error('Error loading chat history:', error);
+      return [];
+    }
+  };
+
+  const [messages, setMessages] = useState(loadChatHistory);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Save chat history to localStorage whenever messages change
+  useEffect(() => {
+    try {
+      localStorage.setItem('aiChatHistory', JSON.stringify(messages));
+    } catch (error) {
+      console.error('Error saving chat history:', error);
+    }
+  }, [messages]);
+
+  // Function to clear chat history
+  const clearChatHistory = () => {
+    setMessages([]);
+    localStorage.removeItem('aiChatHistory');
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -74,6 +100,19 @@ const [messages, setMessages]= useState([]);
       <div className="aichatbot-container">
         <h1 className="aichatbot-title">AI Tutor</h1>
         <h3 className="aichatbot-subtitle">What can I help you with?</h3>
+
+        <div className="chat-controls">
+          <button
+            className="clear-history-button"
+            onClick={clearChatHistory}
+            title="Clear chat history"
+          >
+            🗑️ Clear History
+          </button>
+          {messages.length > 0 && (
+            <span className="message-count">{messages.length} messages</span>
+          )}
+        </div>
 
         <div className="chat-box" ref={chatBoxRef}>
           {/* <div className="message user-message">

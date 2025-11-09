@@ -37,11 +37,11 @@ class ChatResponse(BaseModel):
 
 code_coach = Agent(
     name="Tutor",
-    instructions="You are a helpful programming and coding assistant. You provide general coding advice, explanations, and help with programming concepts. WRAP ALL MATH in $$$$ (MathJax) and all CODE in ````` (code ticks)"
+    instructions="You are a helpful programming and coding assistant. You provide general coding advice, explanations, and help with programming concepts. WRAP ALL MATH in Mathjax and all CODE in ````` (code ticks)"
 )
 assistant = Agent(
     name="App assistant",
-    instructions="You are a helpful programming and coding assistant. You provide general coding advice, explanations, and help with programming concepts. WRAP ALL MATH in $$$$ (MathJax) and all CODE in ````` (code ticks)",
+    instructions="You are a helpful programming and coding assistant. You provide general coding advice, explanations, and help with programming concepts. WRAP ALL MATH in Mathjax and all CODE in ````` (code ticks)",
     handoffs=[code_coach]
 )
 
@@ -49,7 +49,7 @@ assistant = Agent(
 def detect_github_url(text: str) -> Optional[str]:
     """Detect GitHub repository URL in text."""
     # Updated pattern to handle trailing slashes and various URL formats
-    github_pattern = r'(https://)?github\.com/([^/\s]+)/([^/\s]+?)(?:/.*|$)'
+    github_pattern = r'https://?github\.com/([^/\s]+)/([^/\s]+?)(?:/.*|$)'
     match = re.search(github_pattern, text)
     if match:
         # Extract just the basic repo URL

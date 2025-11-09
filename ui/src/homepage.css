@@ -82,14 +82,15 @@ html, body {
 
 .item-element{
   border-radius: 10px;
-  border: 1p solid #ccc;
+  border: 1px solid #ccc;
   background: #85e3f3;
   opacity: 0.7;
-  padding: 5px;
+  padding: 10px;
   margin: 7px;
   display: flex;
-  justify-content: space-around; /* or space-between, center, flex-start, flex-end */
-  align-items: center; /* for vertical alignment within the horizontal row */
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
 .item-element:hover{
@@ -100,12 +101,31 @@ html, body {
 .item-element-name{
   text-align: left;
   font-weight: 600;
-  width: 40%;
+  flex: 0 0 35%;
   opacity: 1;
 }
 
-progress{
-  padding: 5px;
+.item-element progress{
+  flex: 1;
+  min-width: 80px;
+  max-width: 120px;
+  height: 20px;
+  margin: 0;
+}
+
+.item-element progress::-webkit-progress-bar {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+}
+
+.item-element progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #2e9bb1, #6FE6FC);
+  border-radius: 10px;
+}
+
+.item-element progress::-moz-progress-bar {
+  background: linear-gradient(90deg, #2e9bb1, #6FE6FC);
+  border-radius: 10px;
 }
 .vision-item:hover {
   transform: translateY(-6px);

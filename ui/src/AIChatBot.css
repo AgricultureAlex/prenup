@@ -24,7 +24,37 @@ font-size: 4rem;
 .aichatbot-subtitle {
     font-size: 2rem;
   color: #2e9bb1;
-  margin-bottom: 3rem; /* 👈 adds breathing room below header */
+  margin-bottom: 1rem;
+}
+
+.chat-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.clear-history-button {
+  background-color: #f87171;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.clear-history-button:hover {
+  background-color: #dc2626;
+}
+
+.message-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 .chat-box {
