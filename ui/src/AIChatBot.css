@@ -1,0 +1,90 @@
+.aichatbot-container{
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(to bottom right, #6FE6FC, #F2F7A1);
+    color: #231d1d;
+    min-height: 100vh;
+    text-align: center;
+    padding: 1rem;
+    font-family: monospace;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4rem 2rem;
+}
+
+.aichatbot-title {
+font-size: 4rem;
+  color: #2e9bb1;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-family: monospace;
+  margin-top: -3rem;
+}
+
+.aichatbot-subtitle {
+    font-size: 2rem;
+  color: #2e9bb1;
+  margin-bottom: 3rem; /* 👈 adds breathing room below header */
+}
+
+.chat-box {
+  background-color: #e2f4e1;
+  border-radius: 1.25rem;
+  padding: 1rem;
+  height: 450px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: #2e9bb1;
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.ai-message {
+  align-self: flex-start;
+  background-color: #98e3f3;
+  color: #2e9bb1;
+  border-bottom-left-radius: 0;
+}
+
+.message-input-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  background-color: white;
+  border-radius: 1.25rem;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.message-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 1rem;
+  background-color: transparent;
+}
+
+.send-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #1E3A8A;
+  cursor: pointer;
+}
+
+  
+  
+  

@@ -2,4 +2,9 @@
 test_output.txt
 testoutput.txt
 venv/
+.venv/node_modules/
+ui/node_modules/
 .venv/
+tutor-prototype
+AgentTest.py
+ui/GitHub Integration/test_output.txt

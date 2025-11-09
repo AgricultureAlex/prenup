@@ -1,0 +1,215 @@
+/* RESET GLOBAL DEFAULT SPACING */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  overflow-x: hidden;
+}
+
+/* GENERAL LAYOUT */
+.homepage-container {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(to bottom right, #6FE6FC, #F2F7A1);
+  color: #231d1d;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+  font-family: monospace;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4rem 2rem;
+}
+
+
+/* HEADER */
+.homepage-header {
+  margin-bottom: 60px;
+}
+
+.homepage-title {
+  font-size: 5rem;
+  color: #2e9bb1;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-family: monospace;
+}
+
+.homepage-subtitle {
+  font-size: 3rem;
+  color: #2e9bb1;
+  margin-bottom: 3rem; /* 👈 adds breathing room below header */
+}
+
+/* VISION BOARD */
+.homepage-visionboard-section {
+  margin: 50px auto;
+  max-width: 1000px;
+}
+
+.homepage-visionboard-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2e9bb1;
+  margin-bottom: 2rem;
+  margin-top: 5rem; /* 👈 adds top margin before the section starts */
+}
+
+.homepage-visionboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 4rem; /* 👈 space before next section */
+}
+
+.vision-item {
+  background: #DDF6D2;
+  border-radius: 16px;
+  padding: 25px 20px;
+  width: 280px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.item-element{
+  border-radius: 10px;
+  border: 1p solid #ccc;
+  background: #85e3f3;
+  opacity: 0.7;
+  padding: 5px;
+  margin: 7px;
+  display: flex;
+  justify-content: space-around; /* or space-between, center, flex-start, flex-end */
+  align-items: center; /* for vertical alignment within the horizontal row */
+}
+
+.item-element:hover{
+  background: #c2dfe5;
+  transition: background 0.3s ease;
+}
+
+.item-element-name{
+  text-align: left;
+  font-weight: 600;
+  width: 40%;
+  opacity: 1;
+}
+
+progress{
+  padding: 5px;
+}
+.vision-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.vision-item h3 {
+  color: #9fa7e4;
+  font-size: 1.3rem;
+  margin-bottom: 100px;
+}
+
+.vision-item p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+
+/* DAILY CHALLENGE */
+.homepage-challenge {
+  background: #f9f9ff;
+  border-radius: 20px;
+  padding: 40px 25px;
+  max-width: 800px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  margin: 0 auto 4rem; /* 👈 bottom space before streaks */
+}
+
+.challenge-title {
+  font-size: 2rem;
+  color: #3a45b0;
+  margin-bottom: 15px;
+}
+
+.challenge-text {
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 25px;
+}
+
+.homepage-challenge{
+  background: #2e9bb1;
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 20px auto;
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 200px;
+}
+
+.homepage-challenge:hover {
+  background: #207687;
+  transform: translateY(-2px);
+  transition: background 0.5s ease, transform 0.5s ease;
+}
+
+/* STREAKS SECTION */
+.homepage-streaks {
+  background: #fff;
+  border-radius: 20px;
+  padding: 10px;
+  max-width: 700px;
+  margin: 0 auto 80px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  gap: 50px;
+
+}
+
+.streaks-title {
+  font-size: 2rem;
+  color: #2e9bb1;
+  margin-bottom: 15px;
+}
+
+.streak-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .vision-item {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .homepage-title {
+    font-size: 2.5rem;
+  }
+}
+
+
+

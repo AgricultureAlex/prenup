@@ -1,0 +1,19 @@
+.main-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(to bottom right, #6FE6FC, #F2F7A1);
+}
+
+
+.main-content {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  font-family: monospace;
+  background-color: transparent; /* ✅ or just remove the line entirely */
+
+  /* Show in the center */
+  display: flex;
+  flex-direction: column;
+}
