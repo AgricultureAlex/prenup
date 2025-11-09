@@ -1,4 +1,9 @@
 import react, {useState, useEffect, useRef} from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import "./AIChatBot.css";
 import MainLayout from './layout';
 import Navigation from './navigation/Navigation';
@@ -80,11 +85,23 @@ const [messages, setMessages]= useState([]);
           </div> */}
 
           {messages.map((message, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className={`message ${message.sender}-message`}
           >
-            {message.text}
+            {message.sender === 'ai' ? (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+              >
+                {message.text}
+              </ReactMarkdown>
+            ) : (
+              // Handle newlines in user messages
+              <div style={{ whiteSpace: 'pre-wrap' }}>
+                {message.text}
+              </div>
+            )}
           </div>
         ))}
         </div>

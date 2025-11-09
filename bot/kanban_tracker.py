@@ -385,4 +385,5 @@ if __name__ == "__main__":
     # Example usage
     print("This is the Kanban Tracker module.")
     print("Import it in your main agent file to track project tasks.")
+    python3 -m bot.code_tutor
 

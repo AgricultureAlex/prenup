@@ -76,7 +76,6 @@ font-size: 4rem;
   font-size: 1rem;
   background-color: transparent;
 }
-
 .send-button {
   background: none;
   border: none;
@@ -85,6 +84,141 @@ font-size: 4rem;
   cursor: pointer;
 }
 
-  
-  
+/* Markdown styling for AI messages */
+.ai-message h1,
+.ai-message h2,
+.ai-message h3,
+.ai-message h4,
+.ai-message h5,
+.ai-message h6 {
+  color: #1E3A8A;
+  margin: 0.5rem 0;
+  font-weight: bold;
+}
+
+.ai-message h1 { font-size: 1.5rem; }
+.ai-message h2 { font-size: 1.3rem; }
+.ai-message h3 { font-size: 1.1rem; }
+.ai-message h4, .ai-message h5, .ai-message h6 { font-size: 1rem; }
+
+.ai-message ul,
+.ai-message ol {
+  text-align: left;
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.ai-message li {
+  margin: 0.25rem 0;
+}
+
+.ai-message p {
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.ai-message strong {
+  font-weight: bold;
+  color: #1E3A8A;
+}
+
+.ai-message em {
+  font-style: italic;
+}
+
+.ai-message code {
+  background-color: #f0f9ff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #1E3A8A;
+  border: 1px solid #bae6fd;
+}
+
+.ai-message pre {
+  background-color: #f0f9ff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  border: 1px solid #bae6fd;
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.ai-message pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-size: 0.85rem;
+  text-align: left;
+  white-space: pre;
+}
+
+.ai-message blockquote {
+  border-left: 4px solid #1E3A8A;
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  font-style: italic;
+  background-color: rgba(30, 58, 138, 0.05);
+}
+
+.ai-message table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+}
+
+.ai-message th,
+.ai-message td {
+  border: 1px solid #bae6fd;
+  text-align: left;
+  padding: 0.5rem;
+}
+
+.ai-message th {
+  background-color: #1E3A8A;
+  color: white;
+  font-weight: bold;
+}
+
+.ai-message hr {
+  border: none;
+  border-top: 2px solid #bae6fd;
+  margin: 1rem 0;
+}
+
+/* KaTeX math styling */
+.ai-message .katex {
+  font-size: 1rem;
+  color: #1E3A8A;
+}
+
+.ai-message .katex-display {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.ai-message .katex-html {
+  white-space: normal;
+}
+
+/* Ensure inline math doesn't break layout */
+.ai-message .katex-mathml {
+  display: none;
+}
+
+/* Style math blocks consistently */
+.ai-message code[class*="language-"] {
+  background-color: #f0f9ff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  border: 1px solid #bae6fd;
+}
+
+/* Improve spacing around math elements */
+.ai-message p:has(.katex) {
+  line-height: 1.6;
+}
   

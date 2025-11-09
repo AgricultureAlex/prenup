@@ -6,7 +6,12 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.5",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
+    "rehype-katex": "^7.0.0",
+    "katex": "^0.16.0"
   },
   "scripts": {
     "start": "react-scripts start",

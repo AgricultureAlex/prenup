@@ -1,0 +1,127 @@
+{
+  "repo": "/var/folders/k2/72f95nrj5ln0vtgjg6vml7c00000gn/T/repo_clone__i4s1nac",
+  "mode": 1,
+  "questions": [
+    {
+      "question": "What is the most likely purpose of function 'main'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def main():\n    args = docopt(__doc__, version=__version__)\n\n    store = SQLiteStore(args[\"<database>\"])\n\n    if args[\"init\"]:\n        sys.exit(0)\n\n    if args[\"--force-refresh\"]:\n        store.refresh(force=True)\n    elif args[\"--no-refresh\"]:\n        pass\n    else:\n        store.refresh()\n\n    app = QApplication([])\n    entries = sorted(store.entries, key=entry_dt)\n\n    window = ui.QWindow(entries)\n    window.show()\n\n    sys.exit(app.exec_())",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'file_hash'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def file_hash(filepath: str) -> str:\n    h = hashlib.md5()\n    with open(filepath, \"rb\") as fp:\n        h.update(fp.read())\n    return h.hexdigest()",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'directory_hash'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def directory_hash(directory: str) -> str:\n    files = glob(os.path.join(directory, \"**/*\"), recursive=True)\n\n    h = hashlib.md5()\n    for filepath in files:\n        h.update(bytes(filepath, \"utf-8\"))\n        with open(filepath, \"rb\") as fp:\n            h.update(fp.read())\n\n    return h.hexdigest()",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'entries'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def entries(self) -> List[Entry]:\n        cur = self.con.cursor()\n        return [entry_loads(it[0]) for it in cur.execute(\"SELECT data FROM entries\")]",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'refresh_calendar'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def refresh_calendar(self):\n        self.calendar.render(self.year, self.plot_type)",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'parse_trackers'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def parse_trackers(text: str) -> List[Tracker]:\n    \"\"\"\n    Parser trackers in nomie format from the given body. A tracker without a\n    value specification is a boolean type. For values, we only support integers\n    right now. Interpretation of values are left to the consumer.\n    \"\"\"\n\n    trackers = []\n\n    for match in re.finditer(r\"#([a-zA-Z\\d\\-]+)(\\((\\-?\\d+)\\))?\", text):\n\n        name = match.group(1)\n        if match.group(3) is not None:\n            value: Optional[int] = int(match.group(3))\n        else:\n            value = None\n        trackers.append(Tracker(name, value))\n\n    return trackers",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'parse_orgzly'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def parse_orgzly(filepath: str) -> List[Entry]:\n    \"\"\"\n    Parse entries from an orgzly style file where I keep entries with a heading\n    'log'.\n    \"\"\"\n\n    entry_heading = \"log\"\n    root = orgparse.loads(read_file(filepath))\n\n    valid_nodes = []\n    for n in root[1:]:\n        if n.heading == entry_heading:\n            valid_nodes.append(n)\n\n    return [parse_orgzly_node(n) for n in valid_nodes]",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'plot_month'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def plot_month(ax: Axes, year: int, month: int, colors: Dict[datetime.date, str]) -> List[plt.Artist]:\n    \"\"\"\n    Plot a month using given color mapping and return a list of rectangular\n    patches mapping to days.\n\n    Each patch has an extra `_data` property which contains date value.\n    \"\"\"\n\n    ax.set_xlim((1, 8))\n    ax.set_ylim((1, 9))\n\n    cal = calendar.Calendar(firstweekday=6)\n\n    padding = 0.0\n    for i, day in enumerate([\"Sun\", \"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\"]):\n        ax.text(i + 1.5, 7 + 0.3, day, ha=\"center\", color=\"#aaaaaa\", fontfamily=\"Lora\", fontsize=\"x-small\")\n\n    ax.text(8 - padding, 9 - padding, calendar.month_name[month], ha=\"right\", va=\"top\", color=\"#777777\", fontfamily=\"Lora\", fontstyle=\"italic\", fontsize=\"medium\")\n\n    date_patches = []\n\n    row = 1\n    for dt in cal.itermonthdates(year, month):\n        if dt.month != month:\n            continue\n\n        weekday = dt.isoweekday()\n        x_grid = 1 + (weekday % 7)\n        y_grid = 7 - row\n\n        x = x_grid + padding\n        y = y_grid + padding\n        side = 1 - 2 * padding\n\n        color = colors.get(dt, \"white\")\n        text_color = \"#777777\" if dark_foreground(color) else \"white\"\n\n        rect = patches.FancyBboxPatch((x, y), side, side, boxstyle=\"Round, pad=0, rounding_size=0.0\", facecolor=color, edgecolor=\"#eeeeee\", picker=True)\n        ax.add_patch(rect)\n\n        rect._data = {\"date\": dt}\n        date_patches.append(rect)\n        ax.text(x + side / 2, y + side / 2, f\"{dt.day}\", ha=\"center\", va=\"center\", color=text_color, fontfamily=\"Lora\", fontsize=\"x-small\")\n\n        if weekday == 6:\n            row += 1\n\n    ax.axis(\"off\")\n    return date_patches",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'test_version'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def test_version():\n    assert __version__ == \"3.0.0\"",
+      "explanation": "Guessed from name/snippet"
+    },
+    {
+      "question": "What is the most likely purpose of function 'calculate_cache_state'?",
+      "options": [
+        "Utility/helper",
+        "Data transformation",
+        "I/O operation",
+        "Unknown/other"
+      ],
+      "answer": "Utility/helper",
+      "snippet": "def calculate_cache_state(source: Source) -> str:\n    if source.source_type == SourceType.ORGZLY:\n        return file_hash(source.path)\n    elif source.source_type == SourceType.ORG_LIST:\n        return file_hash(source.path)\n    elif source.source_type == SourceType.ORG_JOURNAL:\n        return directory_hash(source.path)\n    else:\n        raise TypeError(\"Wrong source type\")",
+      "explanation": "Guessed from name/snippet"
+    }
+  ],
+  "score": 1
+}
