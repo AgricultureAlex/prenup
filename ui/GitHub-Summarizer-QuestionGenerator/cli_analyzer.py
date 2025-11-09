@@ -80,6 +80,41 @@ def analyze_command(args):
             print(f"\n🛠️ TECHNOLOGY STACK")
             print(", ".join(result.tech_stack))
         
+        if result.concepts:
+            print(f"\n🧠 CONCEPTS IDENTIFIED")
+            # Group concepts by category
+            concepts_by_category = {}
+            for concept in result.concepts:
+                category = concept.get('category', 'other')
+                if category not in concepts_by_category:
+                    concepts_by_category[category] = []
+                concepts_by_category[category].append(concept)
+            
+            # Display concepts organized by category
+            category_icons = {
+                'language': '🔤',
+                'framework': '🏗️',
+                'algorithm': '⚙️',
+                'theory': '📚',
+                'networking': '🌐',
+                'io': '💾',
+                'computation': '🖥️',
+                'data_structure': '📊',
+                'design_pattern': '🎨',
+                'security': '🔒',
+                'testing': '🧪',
+                'other': '🔧'
+            }
+            
+            for category, concepts in sorted(concepts_by_category.items()):
+                icon = category_icons.get(category, '•')
+                category_display = category.replace('_', ' ').title()
+                print(f"\n  {icon} {category_display}:")
+                for concept in concepts[:3]:  # Show top 3 per category
+                    importance = concept.get('importance', 'medium')
+                    importance_icon = '🔥' if importance == 'high' else '⭐' if importance == 'medium' else '💡'
+                    print(f"    {importance_icon} {concept.get('name', 'Unknown')}: {concept.get('description', 'No description')}")
+        
         if result.key_components:
             print(f"\n🔧 KEY COMPONENTS")
             for comp in result.key_components[:5]:  # Show top 5

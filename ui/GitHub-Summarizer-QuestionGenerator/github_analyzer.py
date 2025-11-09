@@ -50,6 +50,7 @@ class AnalysisResult:
     architecture: Dict[str, Any]
     key_components: List[Dict[str, str]]
     tech_stack: List[str]
+    concepts: List[Dict[str, Any]]
     complexity_score: Optional[int]
     recommendations: List[str]
     raw_response: str
@@ -396,6 +397,10 @@ Please analyze this codebase and provide a response in the following JSON format
         ...
     ],
     "tech_stack": ["technology1", "technology2", "..."],
+    "concepts": [
+        {{"name": "ConceptName", "category": "language|framework|algorithm|theory|networking|io|computation|data_structure|design_pattern|security|testing|other", "description": "Brief description of the concept and how it's used", "examples": ["specific usage example 1", "specific usage example 2"], "importance": "high|medium|low"}},
+        ...
+    ],
     "complexity_score": 1-10,
     "recommendations": ["improvement suggestion 1", "improvement suggestion 2", "..."]
 }}
@@ -405,9 +410,22 @@ Focus on:
 2. Key architectural patterns and design decisions
 3. Main components and how they interact
 4. Technology stack and dependencies
-5. Code quality and potential improvements
-6. Scalability considerations
-{f"7. How this subfolder fits within the larger repository structure" if metadata.subfolder else ""}
+5. Programming concepts, algorithms, theories, and technical patterns used
+6. Code quality and potential improvements
+7. Scalability considerations
+{f"8. How this subfolder fits within the larger repository structure" if metadata.subfolder else ""}
+
+For the concepts section, identify and categorize important technical concepts found in the code:
+- Programming languages and their specific features used
+- Frameworks, libraries, and tools employed
+- Algorithms and data structures implemented
+- Software engineering principles and design patterns
+- Networking protocols and communication methods
+- I/O operations and data handling approaches
+- Low-level computation concepts if applicable
+- Security practices and authentication methods
+- Testing methodologies and quality assurance
+- Any other significant technical concepts
 
 Provide specific, actionable insights based on the actual code structure and content.
 """
@@ -429,6 +447,7 @@ Provide specific, actionable insights based on the actual code structure and con
                     "architecture": {},
                     "key_components": [],
                     "tech_stack": [],
+                    "concepts": [],
                     "complexity_score": None,
                     "recommendations": []
                 }
@@ -440,6 +459,7 @@ Provide specific, actionable insights based on the actual code structure and con
                 architecture=parsed.get("architecture", {}),
                 key_components=parsed.get("key_components", []),
                 tech_stack=parsed.get("tech_stack", []),
+                concepts=parsed.get("concepts", []),
                 complexity_score=parsed.get("complexity_score"),
                 recommendations=parsed.get("recommendations", []),
                 raw_response=raw_response
@@ -454,6 +474,7 @@ Provide specific, actionable insights based on the actual code structure and con
                 architecture={},
                 key_components=[],
                 tech_stack=[],
+                concepts=[],
                 complexity_score=None,
                 recommendations=[],
                 raw_response=raw_response
