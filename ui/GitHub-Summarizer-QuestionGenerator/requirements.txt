@@ -1,7 +1,11 @@
-# GitHub Integration Requirements
+# GitHub Integration Requirements for AI Chat System
 python-dotenv>=1.0.0
 openai>=1.0.0
 fastapi>=0.104.1
-uvicorn>=0.24.0
+uvicorn[standard]>=0.24.0
 pydantic>=2.0.0
 openai-agents>=0.1.0
+
+# Additional dependencies for full functionality
+httpx>=0.25.0
+requests>=2.31.0

@@ -48,6 +48,6 @@ agent = Agent(model="gpt-4o-mini",
                 a breakdown of the codebase's function and usage.", 
                 instructions=prompt)
 
-result = Runner.run_sync(agent, prompt, context=context)
+result = Runner.run_streamed(agent, prompt, context=context)
 
 print(result.final_output)

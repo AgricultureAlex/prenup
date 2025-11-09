@@ -19,6 +19,12 @@ const [messages, setMessages]= useState([]);
     const userText = inputValue;
     setInputValue("");
     
+    // Convert current messages to history format for API
+    const history = messages.map(msg => ({
+      role: msg.sender === 'user' ? 'user' : 'assistant',
+      content: msg.text
+    }));
+
     // Add user message to chat
     setMessages((m) => [...m, { text: userText, sender: 'user' }]);
     setLoading(true);
@@ -27,7 +33,10 @@ const [messages, setMessages]= useState([]);
       const res = await fetch(`${API_BASE}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText }),
+        body: JSON.stringify({
+          message: userText,
+          history: history
+        }),
       });
 
       if (!res.ok) {
