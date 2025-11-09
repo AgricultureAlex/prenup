@@ -167,3 +167,39 @@
     padding: 1.5rem;
   }
 }
+/* Phone number and daily challenge settings */
+.phone-input,
+.time-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.phone-input:focus,
+.time-input:focus {
+  outline: none;
+  border-color: #2e9bb1;
+}
+
+.test-message-button {
+  background: #2e9bb1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.test-message-button:hover:not(:disabled) {
+  background: #207687;
+  transform: translateY(-2px);
+}
+
+.test-message-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

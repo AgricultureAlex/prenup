@@ -15,7 +15,7 @@ function Navigation({ isOpen, setIsOpen }) {
     const handleResize = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
-      setIsOpen(!mobile); 
+      setIsOpen(!mobile);
     };
 
     window.addEventListener("resize", handleResize);

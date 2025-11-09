@@ -3,7 +3,7 @@ import React from "react";
 function NavFooter() {
   return (
     <div className="nav-footer">
-      <strong>APP NAME</strong>
+      <strong><em>Vibe Child</em></strong>
     </div>
   );
 }

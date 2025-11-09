@@ -27,6 +27,22 @@ function Settings() {
 
   const [selectedFont, setSelectedFont] = useState(loadFont);
   const [selectedFontSize, setSelectedFontSize] = useState(loadFontSize);
+  
+  // Phone number and daily challenge settings
+  const [phoneNumber, setPhoneNumber] = useState(() => {
+    return localStorage.getItem('phoneNumber') || '';
+  });
+  
+  const [dailyChallengeEnabled, setDailyChallengeEnabled] = useState(() => {
+    return localStorage.getItem('dailyChallengeEnabled') === 'true';
+  });
+  
+  const [dailyChallengeTime, setDailyChallengeTime] = useState(() => {
+    return localStorage.getItem('dailyChallengeTime') || '09:00';
+  });
+  
+  const [sendTestLoading, setSendTestLoading] = useState(false);
+  const [testMessage, setTestMessage] = useState('');
 
   // Available fonts
   const fonts = [
@@ -80,6 +96,51 @@ function Settings() {
 
   const handleFontSizeChange = (e) => {
     setSelectedFontSize(e.target.value);
+  };
+  
+  // Save phone number to localStorage
+  useEffect(() => {
+    localStorage.setItem('phoneNumber', phoneNumber);
+  }, [phoneNumber]);
+  
+  // Save daily challenge settings to localStorage
+  useEffect(() => {
+    localStorage.setItem('dailyChallengeEnabled', dailyChallengeEnabled.toString());
+  }, [dailyChallengeEnabled]);
+  
+  useEffect(() => {
+    localStorage.setItem('dailyChallengeTime', dailyChallengeTime);
+  }, [dailyChallengeTime]);
+  
+  // Send test iMessage
+  const sendTestMessage = async () => {
+    if (!phoneNumber.trim()) {
+      setTestMessage('⚠️ Please enter a phone number first');
+      return;
+    }
+    
+    setSendTestLoading(true);
+    setTestMessage('');
+    
+    try {
+      const response = await fetch('http://localhost:8000/send-test-imessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone_number: phoneNumber })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setTestMessage('✅ Test message sent! Check your iMessage.');
+      } else {
+        setTestMessage(`❌ Failed: ${data.detail || 'Unknown error'}`);
+      }
+    } catch (error) {
+      setTestMessage('❌ Could not connect to server. Make sure backend is running.');
+    } finally {
+      setSendTestLoading(false);
+    }
   };
 
   return (
@@ -148,6 +209,75 @@ function Settings() {
               0123456789 !@#$%^&*()
             </p>
           </div>
+        </div>
+
+        <div className="settings-section">
+          <h2 className="settings-section-title">Daily Challenges</h2>
+          
+          <div className="setting-item">
+            <label htmlFor="phone-input" className="setting-label">
+              Phone Number (for iMessage challenges)
+            </label>
+            <input
+              id="phone-input"
+              type="tel"
+              placeholder="+1 (555) 123-4567"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="phone-input"
+            />
+            <button
+              onClick={sendTestMessage}
+              disabled={sendTestLoading || !phoneNumber.trim()}
+              className="test-message-button"
+              style={{
+                marginTop: '0.5rem',
+                padding: '0.5rem 1rem',
+                cursor: phoneNumber.trim() ? 'pointer' : 'not-allowed',
+                opacity: phoneNumber.trim() ? 1 : 0.5
+              }}
+            >
+              {sendTestLoading ? '📤 Sending...' : '📱 Send Test Message'}
+            </button>
+            {testMessage && (
+              <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: testMessage.includes('✅') ? '#4caf50' : '#f44336' }}>
+                {testMessage}
+              </p>
+            )}
+          </div>
+          
+          <div className="setting-item">
+            <label className="setting-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <input
+                type="checkbox"
+                checked={dailyChallengeEnabled}
+                onChange={(e) => setDailyChallengeEnabled(e.target.checked)}
+                style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+              />
+              Enable Daily Challenge
+            </label>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>
+              Get a bite-sized coding challenge sent to your iMessage every day
+            </p>
+          </div>
+          
+          {dailyChallengeEnabled && (
+            <div className="setting-item">
+              <label htmlFor="challenge-time" className="setting-label">
+                Daily Challenge Time
+              </label>
+              <input
+                id="challenge-time"
+                type="time"
+                value={dailyChallengeTime}
+                onChange={(e) => setDailyChallengeTime(e.target.value)}
+                className="time-input"
+              />
+              <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>
+                You'll receive a new challenge at {dailyChallengeTime} every day
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="settings-info">

@@ -38,10 +38,10 @@ function RoadmapPage() {
   }, [completedSteps, category, name]);
 
   // Toggle step completion
-  const toggleStep = (index) => {
+  const toggleStep = (stepKey) => {
     setCompletedSteps(prev => ({
       ...prev,
-      [index]: !prev[index]
+      [stepKey]: !prev[stepKey]
     }));
   };
 
@@ -57,6 +57,65 @@ function RoadmapPage() {
     const completed = Object.values(completedSteps).filter(Boolean).length;
     return totalSteps > 0 ? Math.round((completed / totalSteps) * 100) : 0;
   };
+
+  // Load custom items from localStorage
+  const [customProjects, setCustomProjects] = useState({});
+  const [customRoles, setCustomRoles] = useState({});
+  const [customSkills, setCustomSkills] = useState({});
+
+  useEffect(() => {
+    const loadCustomItems = () => {
+      // Load custom projects
+      const savedProjects = localStorage.getItem('custom_projects');
+      if (savedProjects) {
+        const projects = JSON.parse(savedProjects);
+        const projectsMap = {};
+        projects.forEach(project => {
+          projectsMap[project.name] = {
+            steps: project.steps.map(card => `${card.title}: ${card.description}`)
+          };
+        });
+        setCustomProjects(projectsMap);
+      }
+      
+      // Load custom roles
+      const savedRoles = localStorage.getItem('custom_roles');
+      if (savedRoles) {
+        const roles = JSON.parse(savedRoles);
+        const rolesMap = {};
+        roles.forEach(role => {
+          rolesMap[role.name] = {
+            steps: role.steps.map(card => `${card.title}: ${card.description}`)
+          };
+        });
+        setCustomRoles(rolesMap);
+      }
+      
+      // Load custom skills/tools
+      const savedSkills = localStorage.getItem('custom_skills');
+      if (savedSkills) {
+        const skills = JSON.parse(savedSkills);
+        const skillsMap = {};
+        skills.forEach(skill => {
+          skillsMap[skill.name] = {
+            steps: skill.steps.map(card => `${card.title}: ${card.description}`)
+          };
+        });
+        setCustomSkills(skillsMap);
+      }
+    };
+    
+    loadCustomItems();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', loadCustomItems);
+    window.addEventListener('focus', loadCustomItems);
+    
+    return () => {
+      window.removeEventListener('storage', loadCustomItems);
+      window.removeEventListener('focus', loadCustomItems);
+    };
+  }, []);
 
   const roadmapData ={ // connect with ai agent later to generate dynamic roadmaps
     "Roles": {
@@ -77,25 +136,18 @@ function RoadmapPage() {
           "Learn machine learning algorithms",
           "Work on real-world datasets"
         ]
-      }
+      },
+      // Add custom roles dynamically
+      ...customRoles
     },
     "Projects": {
-      "Mood Tracking App": {
-        steps: [
-          "Define app features and requirements",
-          "Design UI/UX mockups",
-          "Set up backend and database",
-          "Develop frontend interface",
-          "Test and deploy the app"
-        ]
-      },
       "Company Website": {
         steps: [
           "Gather client requirements",
           "Create wireframes and design",
           "Develop frontend with responsive design",
-          "Implement backend functionalities",              
-            "Launch and maintain the website"       
+          "Implement backend functionalities",
+          "Launch and maintain the website"
         ]
       },
       "Video Game": {
@@ -106,7 +158,9 @@ function RoadmapPage() {
           "Design levels and environments",
           "Test, debug, and release the game"
         ]
-      }
+      },
+      // Add custom projects dynamically
+      ...customProjects
     },
     "Skills-Tools": {
       "Python": {
@@ -131,12 +185,14 @@ function RoadmapPage() {
         steps: [
           "Understand NLP fundamentals",
           "Study transformer architecture",
-          "Experiment with pre-trained  models",
+          "Experiment with pre-trained models",
           "Fine-tune models for specific tasks",
           "Deploy models in applications"
         ]
-      }
-    }       
+      },
+      // Add custom skills/tools dynamically
+      ...customSkills
+    }
   }
   
   return (
@@ -200,41 +256,46 @@ function RoadmapPage() {
           {/* Roadmap Steps */}
           <div className="roadmap-steps">
             <ol style={{ listStyle: 'none', padding: 0 }}>
-              {roadmapData[category][name].steps.map((step, index) => (
+              {roadmapData[category][name].steps.map((step, index) => {
+                // Check if this is a custom item (exists in custom arrays)
+                const isCustomItem = customProjects[name] || customRoles[name] || customSkills[name];
+                const stepKey = isCustomItem ? `Milestone ${index + 1}` : index;
+                
+                return (
                 <li
                   key={index}
                   className="individual-step"
-                  onClick={() => toggleStep(index)}
+                  onClick={() => toggleStep(stepKey)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
                     padding: '1rem',
                     margin: '0.5rem 0',
-                    backgroundColor: completedSteps[index] ? '#e8f5e9' : '#fff',
+                    backgroundColor: completedSteps[stepKey] ? '#e8f5e9' : '#fff',
                     border: '1px solid #ddd',
                     borderRadius: '8px',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
-                    textDecoration: completedSteps[index] ? 'line-through' : 'none'
+                    textDecoration: completedSteps[stepKey] ? 'line-through' : 'none'
                   }}
                 >
                   <input
                     type="checkbox"
-                    checked={completedSteps[index] || false}
-                    onChange={() => toggleStep(index)}
+                    checked={completedSteps[stepKey] || false}
+                    onChange={() => toggleStep(stepKey)}
                     style={{
                       width: '20px',
                       height: '20px',
                       cursor: 'pointer'
                     }}
                   />
-                  <span style={{ flex: 1, color: completedSteps[index] ? '#666' : '#000' }}>
+                  <span style={{ flex: 1, color: completedSteps[stepKey] ? '#666' : '#000' }}>
                     {step}
                   </span>
-                  {completedSteps[index] && <span style={{ color: '#4caf50' }}>✓</span>}
+                  {completedSteps[stepKey] && <span style={{ color: '#4caf50' }}>✓</span>}
                 </li>
-              ))}
+              )})}
             </ol>
           </div>
         </>

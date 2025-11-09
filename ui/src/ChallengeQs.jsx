@@ -1,6 +1,7 @@
 import react, {useState, useEffect, useRef, use} from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useModel } from './ModelContext';
 import "./ChallengeQs.css";
 import MainLayout from './layout.jsx';
 import Navigation from './navigation/Navigation';
@@ -8,6 +9,7 @@ import Navigation from './navigation/Navigation';
 const API_BASE = "http://localhost:8000";
 
 function ChallengeQs() {
+  const { selectedModel } = useModel();
   // Load chat history from localStorage on component mount
   const loadChatHistory = () => {
     try {
@@ -52,7 +54,7 @@ function ChallengeQs() {
       const res = await fetch(`${API_BASE}/challenge`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topic }),
+        body: JSON.stringify({ topic: topic, model: selectedModel }),
       });
 
       if (!res.ok) {

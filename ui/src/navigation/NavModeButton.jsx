@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
+import { useModel } from "../ModelContext";
 import "./Navigation.css";
 
 function NavModeButton() {
-  const models = ["xAI", "Claude", "Gemini", "GPT-3.5"];
-  const [currentModel, setCurrentModel] = useState(models[0]);
+  const { selectedModel, setSelectedModel } = useModel();
+  const models = [
+    { value: "openai", label: "GPT-4o" },
+    { value: "gemini", label: "Gemini (Latest)" }
+  ];
 
   const handleChange = (e) => {
-    setCurrentModel(e.target.value);
-    console.log(`Current model: ${e.target.value}`);
+    setSelectedModel(e.target.value);
+    console.log(`Selected AI model: ${e.target.value}`);
   };
 
   return (
@@ -18,12 +22,12 @@ function NavModeButton() {
       <select
         id="model-select"
         className="nav-mode-select"
-        value={currentModel}
+        value={selectedModel}
         onChange={handleChange}
       >
         {models.map((model) => (
-          <option key={model} value={model}>
-            {model}
+          <option key={model.value} value={model.value}>
+            {model.label}
           </option>
         ))}
       </select>

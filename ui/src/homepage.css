@@ -16,13 +16,13 @@ html, body {
 
 /* GENERAL LAYOUT */
 .homepage-container {
-  font-family: var(--global-font, monospace);
-  font-size: var(--global-font-size, 16px);
+  font-family: "Poppins", Arial, sans-serif;
   background: linear-gradient(to bottom right, #6FE6FC, #F2F7A1);
   color: #231d1d;
   min-height: 100vh;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
+  font-family: monospace;
   width: 100%;
   box-sizing: border-box;
   padding: 4rem 2rem;
@@ -34,36 +34,41 @@ html, body {
   margin-bottom: 60px;
 }
 
-.homepage-title-container{
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
 .homepage-title {
-  font-family: monospace !important;
   font-size: 5rem;
   color: #2e9bb1;
-  border-right: 3px solid #2e9bb1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: center;
-  width: fit-content;
-  animation: typing 3s steps(20, end), blink 0.75s step-end infinite;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-family: monospace;
 }
 
-/* Typing animation (fixed width instead of full 100%) */
-@keyframes typing {
-  from { width: 0 }
-  to { width: 16ch; } /* match the length of your text */
-}
-
-/* Blinking cursor */
-@keyframes blink {
-  50% { border-color: transparent; }
-}
 .homepage-subtitle {
-  font-size: 3rem;
+  font-size: 30rem;
+  color: #075e9d;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 0px;
+  font-family: monospace;
+}
+
+.typing-cursor {
+  animation: blink 1s infinite;
+  font-weight: 100;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.homepage-subtitle {
+  font-size: 1.5rem;
   color: #2e9bb1;
   margin-bottom: 3rem; /* 👈 adds breathing room below header */
 }
@@ -199,7 +204,7 @@ html, body {
 
 .challenge-title {
   font-size: 2rem;
-  color: #555;
+  color: #85e3f3;
   margin-bottom: 15px;
 }
 
@@ -273,5 +278,6 @@ html, body {
     font-size: 2.5rem;
   }
 }
+
 
 

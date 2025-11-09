@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
+import { useModel } from './ModelContext';
 import "./AIChatBot.css";
 import MainLayout from './layout';
 import Navigation from './navigation/Navigation';
@@ -13,6 +14,7 @@ const API_BASE = "http://localhost:8000";
 
 function AIChatBot() {
   const location = useLocation();
+  const { selectedModel } = useModel();
   
   // Load chat history from localStorage on component mount
   const loadChatHistory = () => {
@@ -90,7 +92,7 @@ function AIChatBot() {
         const res = await fetch(`${API_BASE}/challenge`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: userText }),
+          body: JSON.stringify({ topic: userText, model: selectedModel }),
         });
 
         if (!res.ok) throw new Error("HTTP " + res.status);
@@ -144,7 +146,8 @@ function AIChatBot() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             message: userText,
-            history: history
+            history: history,
+            model: selectedModel
           }),
         });
 
@@ -306,7 +309,8 @@ Remember: Explain concepts and guide their reasoning, but DO NOT reveal which op
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: contextualPrompt,
-          history: history
+          history: history,
+          model: selectedModel
         }),
       });
 

@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ModelProvider } from "./ModelContext.jsx";
 import Homepage from "./Homepage.jsx";
 import AIChatBot from "./AIChatBot.jsx";
 import Roadmap from "./Roadmap.jsx";
 import ChallengeQs from "./ChallengeQs.jsx";
 import Settings from "./Settings.jsx";
+import AITrendsMonitor from "./AITrendsMonitor.jsx";
 
 
 function App() {
@@ -27,15 +29,18 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/AIChatBot" element={<AIChatBot />} />
-        <Route path="/roadmap/:category/:name" element={<Roadmap />} /> {/* 👈 dynamic route */}
-        <Route path="/ChallengeQs" element={<ChallengeQs />} />
-        <Route path="/Settings" element={<Settings />} />
-      </Routes>
-    </BrowserRouter>
+    <ModelProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/AIChatBot" element={<AIChatBot />} />
+          <Route path="/roadmap/:category/:name" element={<Roadmap />} /> {/* 👈 dynamic route */}
+          <Route path="/ChallengeQs" element={<ChallengeQs />} />
+          <Route path="/Settings" element={<Settings />} />
+          <Route path="/AITrends" element={<AITrendsMonitor />} />
+        </Routes>
+      </BrowserRouter>
+    </ModelProvider>
   );
 }
 
