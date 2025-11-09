@@ -31,6 +31,7 @@ function Settings() {
   // Available fonts
   const fonts = [
     { name: 'Inter', value: 'Inter, system-ui, sans-serif' },
+    { name: 'Monospace', value: 'monospace' },
     { name: 'Arial', value: 'Arial, sans-serif' },
     { name: 'Helvetica', value: 'Helvetica, Arial, sans-serif' },
     { name: 'Times New Roman', value: '"Times New Roman", Times, serif' },

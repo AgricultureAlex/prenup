@@ -334,7 +334,7 @@ Remember: Explain concepts and guide their reasoning, but DO NOT reveal which op
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, loading]);
 
   const getPlaceholderText = () => {
     if (mode === "challenge" && inChallengeSession) {

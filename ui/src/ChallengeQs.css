@@ -1,11 +1,11 @@
 .challengeq-container{
-    font-family: "Poppins", Arial, sans-serif;
+    font-family: var(--global-font, monospace);
+    font-size: var(--global-font-size, 16px);
     background: linear-gradient(to bottom right, #6FE6FC, #F2F7A1);
     color: #231d1d;
     min-height: 100vh;
     text-align: center;
     padding: 1rem;
-    font-family: monospace;
     width: 100%;
     box-sizing: border-box;
     padding: 4rem 2rem;
@@ -17,7 +17,7 @@ font-size: 4rem;
   font-weight: 800;
   letter-spacing: 1px;
   margin-bottom: 10px;
-  font-family: monospace;
+  font-family: var(--global-font, monospace);
   margin-top: -3rem;
 }
 

@@ -2,6 +2,8 @@
   max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
+  font-family: var(--global-font, monospace);
+  font-size: var(--global-font-size, 16px);
 }
 
 .settings-title {

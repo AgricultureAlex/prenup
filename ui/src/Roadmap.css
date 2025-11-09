@@ -6,7 +6,8 @@ body, html {
 }
 
 .roadmap-container {
-  font-family: monospace;
+  font-family: var(--global-font, monospace);
+  font-size: var(--global-font-size, 16px);
   color: #0a5564;
   min-height: 100vh;
   text-align: center;

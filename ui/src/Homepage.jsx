@@ -92,12 +92,10 @@ const handleClick = (category, name) => {
   return (
     <MainLayout>
     <div className="homepage-container">
-      <h1 className="homepage-title">VibeChild.Tech</h1>
-
-      <p className="homepage-subtitle">Your Personalized Learning Companion</p>
-
-      <h3 className="homepage-visionboard-title"> Your Personal Vision Board </h3>
-
+    <div className = "homepage-title-container">
+      <h1 className="homepage-title">VibeChild.tech</h1>
+    </div>
+      <h3 className="homepage-visionboard-title">Your Personal Vision Board</h3>
       <div className="homepage-visionboard">
         <div className="vision-item">
           <h2>Desired Roles</h2>
@@ -105,15 +103,21 @@ const handleClick = (category, name) => {
                 <div className="item-element-name">
                   <p onClick={() => handleClick("Roles", "Fullstack Developer")}>Fullstack Developer</p>
                 </div>
-              <input type="range" min="0" max="100" value={fullstack} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-              <span className="progress-label">{fullstack}%</span>
+              <div className="progress-bar-container">
+                <div className="progress-bar-fill" style={{ width: `${fullstack}%` }}>
+                  {fullstack}%
+                </div>
+              </div>
             </div>
             <div className="item-element">
               <div className="item-element-name">
                 <p onClick={() => handleClick("Roles", "Data Scientist")}>Data Scientist</p>
               </div>
-              <input type="range" min="0" max="100" value={dataScientist} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-              <span className="progress-label">{dataScientist}%</span>
+              <div className="progress-bar-container">
+                <div className="progress-bar-fill" style={{ width: `${dataScientist}%` }}>
+                  {dataScientist}%
+                </div>
+              </div>
             </div>
 
         </div>
@@ -124,24 +128,33 @@ const handleClick = (category, name) => {
             <div className="item-element-name">
               <p onClick={() => handleClick("Projects", "Mood Tracking App")}>Mood Tracking App</p>
             </div>
-            <input type="range" min="0" max="100" value={moodApp} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-            <span className="progress-label">{moodApp}%</span>
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${moodApp}%` }}>
+                {moodApp}%
+              </div>
+            </div>
           </div>
           
           <div className="item-element">
             <div className="item-element-name">
               <p onClick={() => handleClick("Projects", "Company Website")}>Company Website</p>
             </div>
-            <input type="range" min="0" max="100" value={companyWebsite} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-            <span className="progress-label">{companyWebsite}%</span>
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${companyWebsite}%` }}>
+                {companyWebsite}%
+              </div>
+            </div>
           </div>
           
           <div className="item-element">
             <div className="item-element-name">
               <p onClick={() => handleClick("Projects", "Video Game")}>Video Game</p>
             </div>
-            <input type="range" min="0" max="100" value={videoGame} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-            <span className="progress-label">{videoGame}%</span>
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${videoGame}%` }}>
+                {videoGame}%
+              </div>
+            </div>
           </div>
         </div>
         
@@ -152,24 +165,33 @@ const handleClick = (category, name) => {
             <div className="item-element-name">
               <p onClick={() => handleClick("Skills-Tools", "Python")}>Python</p>
             </div>
-            <input type="range" min="0" max="100" value={python} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-            <span className="progress-label">{python}%</span>
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${python}%` }}>
+                {python}%
+              </div>
             </div>
+          </div>
           
           <div className="item-element">
             <div className="item-element-name">
               <p onClick={() => handleClick("Skills-Tools", "SQL")}>SQL</p>
             </div>
-            <input type="range" min="0" max="100" value={sql} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-            <span className="progress-label">{sql}%</span>
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${sql}%` }}>
+                {sql}%
+              </div>
+            </div>
           </div>
           
           <div className="item-element">
             <div className="item-element-name">
               <p onClick={() => handleClick("Skills-Tools", "Large Language Models")}>Large Language Models</p>
             </div>
-            <input type="range" min="0" max="100" value={llm} readOnly className="progress-slider" style={{ pointerEvents: 'none' }} />
-            <span className="progress-label">{llm}%</span>
+            <div className="progress-bar-container">
+              <div className="progress-bar-fill" style={{ width: `${llm}%` }}>
+                {llm}%
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -71,14 +71,14 @@ assistant = Agent(
 
 def detect_github_url(text: str) -> Optional[str]:
     """Detect GitHub repository URL in text."""
-    # Updated pattern to handle trailing slashes and various URL formats
-    github_pattern = r'https://?github\.com/([^/\s]+)/([^/\s]+?)(?:/.*|$)'
+    # Updated pattern to handle usernames and repos with hyphens, underscores, dots
+    github_pattern = r'https://github\.com/([\w\-\.]+)/([\w\-\.]+?)(?:/.*|$|\s)'
     match = re.search(github_pattern, text)
     if match:
         # Extract just the basic repo URL
         username, repo = match.groups()
         # Clean repo name by removing any trailing characters
-        repo = repo.rstrip('/')
+        repo = repo.rstrip('/').rstrip()
         return f"https://github.com/{username}/{repo}"
     return None
 
