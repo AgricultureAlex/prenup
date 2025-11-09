@@ -2,12 +2,9 @@
 test_output.txt
 testoutput.txt
 venv/
-<<<<<<< HEAD
 .venv/node_modules/
 ui/node_modules/
-=======
 .venv/
 tutor-prototype
 AgentTest.py
 ui/GitHub Integration/test_output.txt
->>>>>>> af56df0a0a8180be8b73d45bf473b5b7f49caceb
