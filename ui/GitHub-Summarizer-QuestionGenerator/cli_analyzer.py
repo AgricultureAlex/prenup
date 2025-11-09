@@ -12,6 +12,7 @@ Usage examples:
 import argparse
 import json
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 from github_analyzer import RepositoryAnalyzer
@@ -28,12 +29,15 @@ def setup_logging(verbose: bool = False):
 
 def analyze_command(args):
     """Handle repository analysis command."""
+    # Check if progress should be suppressed (e.g., when called from API)
+    suppress_progress = os.environ.get('SUPPRESS_PROGRESS', '').lower() in ('1', 'true', 'yes')
+    
     analyzer = RepositoryAnalyzer(
         db_path=args.db_path,
         max_files=args.max_files,
         max_chars_per_file=args.max_chars,
         model=args.model,
-        show_progress=True  # Enable progress indicators for CLI usage
+        show_progress=not suppress_progress  # Enable progress indicators for CLI usage unless suppressed
     )
     
     try:
@@ -50,38 +54,39 @@ def analyze_command(args):
             force_refresh=args.force
         )
         
-        print("\n" + "="*80)
-        print("ANALYSIS RESULTS")
-        print("="*80)
+        print("\n---\n")
+        print("# 📊 Repository Analysis\n")
         
-        print(f"\n📊 REPOSITORY SUMMARY")
-        print(f"URL: {result.repository_metadata.repo_url}")
-        print(f"Branch: {result.repository_metadata.ref}")
         # Format the timestamp to be human-readable
         try:
             analysis_time = datetime.fromisoformat(result.repository_metadata.analysis_timestamp.replace('Z', '+00:00'))
             formatted_time = analysis_time.strftime('%Y-%m-%d %H:%M:%S UTC')
         except:
             formatted_time = result.repository_metadata.analysis_timestamp
-            
-        print(f"Files Analyzed: {result.repository_metadata.analyzed_files}/{result.repository_metadata.total_files}")
-        print(f"Total Lines: {result.repository_metadata.total_lines:,}")
-        print(f"Analysis Time: {formatted_time}")
         
-        print(f"\n📝 SUMMARY")
-        print(result.summary)
+        print("## Repository Information\n")
+        print(f"**URL:** {result.repository_metadata.repo_url}  ")
+        print(f"**Branch:** {result.repository_metadata.ref}  ")
+        print(f"**Files Analyzed:** {result.repository_metadata.analyzed_files}/{result.repository_metadata.total_files}  ")
+        print(f"**Total Lines:** {result.repository_metadata.total_lines:,}  ")
+        print(f"**Analysis Time:** {formatted_time}\n")
+        
+        print("## 📝 Summary\n")
+        print(f"{result.summary}\n")
         
         if result.objectives:
-            print(f"\n🎯 OBJECTIVES")
+            print("## 🎯 Objectives\n")
             for i, obj in enumerate(result.objectives, 1):
                 print(f"{i}. {obj}")
+            print()
         
         if result.tech_stack:
-            print(f"\n🛠️ TECHNOLOGY STACK")
-            print(", ".join(result.tech_stack))
+            print("## 🛠️ Technology Stack\n")
+            print(", ".join(f"`{tech}`" for tech in result.tech_stack))
+            print("\n")
         
         if result.concepts:
-            print(f"\n🧠 CONCEPTS IDENTIFIED")
+            print("## 🧠 Concepts Identified\n")
             # Group concepts by category
             concepts_by_category = {}
             for concept in result.concepts:
@@ -109,37 +114,43 @@ def analyze_command(args):
             for category, concepts in sorted(concepts_by_category.items()):
                 icon = category_icons.get(category, '•')
                 category_display = category.replace('_', ' ').title()
-                print(f"\n  {icon} {category_display}:")
+                print(f"### {icon} {category_display}\n")
                 for concept in concepts[:3]:  # Show top 3 per category
                     importance = concept.get('importance', 'medium')
                     importance_icon = '🔥' if importance == 'high' else '⭐' if importance == 'medium' else '💡'
-                    print(f"    {importance_icon} {concept.get('name', 'Unknown')}: {concept.get('description', 'No description')}")
+                    print(f"- **{importance_icon} {concept.get('name', 'Unknown')}:** {concept.get('description', 'No description')}")
+                print()
         
         if result.key_components:
-            print(f"\n🔧 KEY COMPONENTS")
+            print("## 🔧 Key Components\n")
             for comp in result.key_components[:5]:  # Show top 5
-                print(f"• {comp.get('name', 'Unknown')} ({comp.get('type', 'Unknown')}) - {comp.get('purpose', 'No description')}")
+                comp_name = comp.get('name', 'Unknown')
+                comp_type = comp.get('type', 'Unknown')
+                comp_purpose = comp.get('purpose', 'No description')
+                print(f"- **{comp_name}** (`{comp_type}`) - {comp_purpose}")
+            print()
         
         if result.architecture:
-            print(f"\n🏗️ ARCHITECTURE")
+            print("## 🏗️ Architecture\n")
             if 'pattern' in result.architecture:
-                print(f"Pattern: {result.architecture['pattern']}")
+                print(f"**Pattern:** {result.architecture['pattern']}  ")
             if 'layers' in result.architecture:
-                print(f"Layers: {', '.join(result.architecture['layers'])}")
-        
-        # Complexity score display disabled
-        # if result.complexity_score:
-        #     print(f"\n📈 COMPLEXITY SCORE: {result.complexity_score}/10")
+                print(f"**Layers:** {', '.join(result.architecture['layers'])}")
+            print()
         
         if result.recommendations:
-            print(f"\n💡 RECOMMENDATIONS")
+            print("## 💡 Recommendations\n")
             for i, rec in enumerate(result.recommendations, 1):
                 print(f"{i}. {rec}")
+            print()
         
-        print(f"\n📁 FILE TYPE DISTRIBUTION")
-        for ext, count in sorted(result.repository_metadata.file_types.items(), 
+        print("## 📁 File Type Distribution\n")
+        print("| Extension | Count |")
+        print("|-----------|-------|")
+        for ext, count in sorted(result.repository_metadata.file_types.items(),
                                key=lambda x: x[1], reverse=True)[:10]:
-            print(f"{ext}: {count} files")
+            print(f"| `{ext}` | {count} |")
+        print()
             
         if args.output:
             output_path = Path(args.output)

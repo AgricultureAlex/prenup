@@ -10,7 +10,8 @@
 .main-content {
   min-height: 100vh;
   padding: 2rem 1rem;
-  font-family: monospace;
+  font-family: var(--global-font, monospace);
+  font-size: var(--global-font-size, 16px);
   background-color: transparent; /* ✅ or just remove the line entirely */
 
   /* Show in the center */

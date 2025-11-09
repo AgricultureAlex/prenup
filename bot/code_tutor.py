@@ -12,8 +12,8 @@ import json
 import tempfile
 from typing import Optional
 
-from bot.github_importer import import_repo
-from bot.mcq_generator import generate_mcqs_for_repo
+from github_importer import import_repo
+from mcq_generator import generate_mcqs_for_repo
 
 
 MODES = {
