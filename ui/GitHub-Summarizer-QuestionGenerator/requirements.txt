@@ -1,3 +1,7 @@
 # GitHub Integration Requirements
 python-dotenv>=1.0.0
 openai>=1.0.0
+fastapi>=0.104.1
+uvicorn>=0.24.0
+pydantic>=2.0.0
+openai-agents>=0.1.0

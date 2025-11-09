@@ -27,6 +27,7 @@ const handleClick = (category, name) => {
 
   return (
     <MainLayout>
+  
     <div className="homepage-container">
       <h1 className="homepage-title">APP NAME</h1>
 

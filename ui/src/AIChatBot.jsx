@@ -3,22 +3,48 @@ import "./AIChatBot.css";
 import MainLayout from './layout';
 import Navigation from './navigation/Navigation';
 
+const API_BASE = "http://localhost:8000";
+
 function AIChatBot() {
 const [messages, setMessages]= useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (inputValue.trim() === "") return;
-    // Add user message to chat
-    setMessages([...messages, { text: inputValue, sender: 'user' }]);
-    setInputValue("");  
+    if (inputValue.trim() === "") {
+      return; // Don't submit empty messages
+    }
 
-    // fake AI message - replace with actual AI response logic after
-    setTimeout(() => {
-      const aiMessage = { text: "This is a test AI response!", sender: 'ai' };
-      setMessages(prevMessages => [...prevMessages, aiMessage]);
-    }, 800); // 800ms delay to simulate thinking
+    const userText = inputValue;
+    setInputValue("");
+    
+    // Add user message to chat
+    setMessages((m) => [...m, { text: userText, sender: 'user' }]);
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_BASE}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userText }),
+      });
+
+      if (!res.ok) {
+        throw new Error("HTTP " + res.status);
+      }
+
+      const data = await res.json(); // { reply: string }
+      setMessages((m) => [...m, { text: data.reply, sender: 'ai' }]);
+    } catch (err) {
+      console.error(err);
+      setMessages((m) => [
+        ...m,
+        { text: "Oops, something went wrong calling the backend.", sender: 'ai' },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const chatBoxRef = useRef(null);
