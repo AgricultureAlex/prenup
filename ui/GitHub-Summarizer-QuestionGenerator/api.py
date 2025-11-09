@@ -581,12 +581,13 @@ async def get_ai_trends():
         
         print(f"✓ Using X API Bearer Token (length: {len(bearer_token)} chars)")
         
-        # Enhanced search query for educational tech and AI tools
+        # Enhanced search query for AI and tech launches - broader to get more results
         search_query = (
-            "(learn OR tutorial OR course OR framework OR library OR tool) "
-            "(programming OR python OR javascript OR react OR AI OR ML OR web development OR data science) "
-            "(new OR trending OR popular OR latest) "
-            "-is:retweet lang:en"
+            "(AI OR machine learning OR LLM OR GPT OR neural network OR deep learning OR "
+            "framework OR library OR SDK OR API OR launch OR launching OR released OR "
+            "open source OR developer OR coding OR programming OR python OR javascript OR react OR nextjs OR "
+            "webdev OR startup OR SaaS) "
+            "-is:retweet -is:reply lang:en"
         )
         
         # X API v2 endpoint
@@ -627,8 +628,8 @@ async def get_ai_trends():
             # Parse tweets into AI products
             products = parse_tweets_to_products(data)
             
-            # Filter for high quality/engagement
-            products = [p for p in products if p.relevance_score >= 3][:30]
+            # Filter for quality/engagement - lowered threshold to show more results
+            products = [p for p in products if p.relevance_score >= 1][:30]
             
             result = AITrendsResponse(
                 products=products,
