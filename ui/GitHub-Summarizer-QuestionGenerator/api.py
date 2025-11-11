@@ -20,7 +20,7 @@ from gemini_helper import GeminiAgent, run_gemini_agent
 from imessage_sender import send_imessage_async
 
 # Add bot directory to path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'bot'))
+sys.path.insert(0, os.path.join(os.pathm.dirname(__file__), '..', '..', 'bot'))
 try:
     from github_importer import import_repo
     from mcq_generator import generate_mcqs_for_repo
